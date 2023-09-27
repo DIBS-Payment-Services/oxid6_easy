@@ -1,9 +1,10 @@
 <?php
 
 namespace Es\NetsEasy\Application\Model\ResourceModel;
+use Es\NetsEasy\Compatibility\BackwardsCompatibilityHelper;
+use OxidEsales\Eshop\Core\ShopVersion;
 
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
-use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 
 class NetsTransactions
 {
@@ -24,7 +25,8 @@ class NetsTransactions
      */
     protected static function getQueryBuilder()
     {
-        return ContainerFactory::getInstance()->getContainer()->get(QueryBuilderFactoryInterface::class)->create();
+        $helper = oxNew(BackwardsCompatibilityHelper::class);
+        return $helper->getQueryBuilder();
     }
 
     /**
@@ -105,6 +107,12 @@ class NetsTransactions
             ->from(self::$sTableName)
             ->where('oxorder_id = :orderId')
             ->setParameter('orderId', $sOrderId);
+        $oBackwards = oxNew(BackwardsCompatibilityHelper::class);
+        $shopVersion = ShopVersion::getVersion();
+        if ($shopVersion < $oBackwards->getVersionCheck()) {
+            return !empty($queryBuilder->execute()->fetch()['transaction_id']) ? $queryBuilder->execute()->fetch()['transaction_id'] : null;
+        }
+
         return $queryBuilder->execute()->fetchOne();
     }
 
@@ -210,6 +218,12 @@ class NetsTransactions
             ->from(self::$sTableName)
             ->where('oxorder_id = :orderId')
             ->setParameter('orderId', $sOrderId);
+        $oBackwards = oxNew(BackwardsCompatibilityHelper::class);
+        $shopVersion = ShopVersion::getVersion();
+        if ($shopVersion < $oBackwards->getVersionCheck()) {
+            return !empty($queryBuilder->execute()->fetch()['payment_status']) ? $queryBuilder->execute()->fetch()['payment_status'] : null;
+        }
+
         return $queryBuilder->execute()->fetchOne();
     }
 
