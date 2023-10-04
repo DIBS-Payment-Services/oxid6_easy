@@ -10,7 +10,6 @@
 /**
  * Metadata version
  */
-$ShopVersion = \OxidEsales\Eshop\Core\ShopVersion::getVersion();
 $sMetadataVersion = '2.1';
 
 /**
@@ -65,7 +64,8 @@ $aModule = [
         'onDeactivate' => '\Es\NetsEasy\Core\Events::onDeactivate'
     ]
 ];
-if ($ShopVersion < '6.5') {
+
+if (version_compare(\OxidEsales\Eshop\Core\ShopVersion::getVersion(), '6.5', '<')) {
     $aModule['events']['onActivate'] = '\Es\NetsEasy\Compatibility\Core\Events::onActivate';
     $aModule['events']['onDeactivate'] = '\Es\NetsEasy\Compatibility\Core\Events::onDeactivate';
 }
