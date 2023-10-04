@@ -19,7 +19,7 @@
 ### Download / Installation
 1] Install Nets Plugin:
 
-    Run command: composer require nets-ecom/oxid6_netseasy_beta    
+    Run command: composer require nexi-ecom/oxid6_easy    
 
 2] Activate the Nets module:
 

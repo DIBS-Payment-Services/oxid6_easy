@@ -9,23 +9,20 @@ namespace Es\NetsEasy\Compatibility\Core;
 
 use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
-use Es\NetsEasy\Application\Helper\Payment;
-use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
-use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
+use OxidEsales\Eshop\Application\Model\Payment;
+use Es\NetsEasy\Application\Helper\Payment as NetsPayment;
 use Es\NetsEasy\Application\Helper\DebugLog;
-
 
 /**
  * Class defines what module does on Shop events.
  */
 class Events
 {
-
     /**
      * Function to execute action on activate event
      * @return void
      */
-    static function onActivate()
+    public static function onActivate()
     {
         self::createTables();
         self::addPaymentMethods();
@@ -35,20 +32,28 @@ class Events
      * Function to execute action on deactivate event
      * @return void
      */
-    static function onDeactivate()
+    public static function onDeactivate()
     {
-        self::createTables();
+
     }
 
     /**
      * Execute necessary module migrations on activate event
      * @return void
      */
-    static function createTables()
+    protected static function createTables()
     {
-        self::addTable('nets_transactions',self::getCreateTableSql());
+        self::addTable('nets_transactions', self::getCreateTableSql());
     }
-    public static function addTable($sTableName, $sQuery)
+
+    /**
+     * Create a new table
+     *
+     * @param  string $sTableName
+     * @param  string $sQuery
+     * @return bool
+     */
+    protected static function addTable($sTableName, $sQuery)
     {
         $aTables = DatabaseProvider::getDb()->getAll("SHOW TABLES LIKE '{$sTableName}'");
         if (empty($aTables)) {
@@ -57,29 +62,27 @@ class Events
         }
         return false;
     }
+
     /**
      * Add necessary payment method on activate event
      * @return void
      * @throws DatabaseConnectionException
      */
-    static function addPaymentMethods()
+    protected static function addPaymentMethods()
     {
         DebugLog::getInstance()->log("addPaymentMethods called");
         $db = DatabaseProvider::getDb();
 
-
-        foreach (Payment::getInstance()->getNetsPaymentTypes() as $sPaymentId => $aPaymentType) {
+        foreach (NetsPayment::getInstance()->getNetsPaymentTypes() as $sPaymentId => $aPaymentType) {
             //check if nets payment is completed
-
             $sPaymentOxid = $db->execute('SELECT OXID FROM oxpayments WHERE oxid = :paymentId', ['paymentId' => $sPaymentId]);
             if (empty($sPaymentOxid)) {
-
                 DebugLog::getInstance()->log("payment method added for : " . json_encode($aPaymentType));
                 //create payment
                 $sDesc = $aPaymentType['descEN'];
                 $sDescDE = $aPaymentType['descDE'];
                 if (!empty($sDesc)) {
-                    $oPayment = oxNew(\OxidEsales\Eshop\Application\Model\Payment::class);
+                    $oPayment = oxNew(Payment::class);
                     $oPayment->assign([
                         'OXID'         => $sPaymentId, //0
                         'OXACTIVE'     => 0, // 1
@@ -106,11 +109,10 @@ class Events
                     $oPayment->save();
                 }
             }
-
         }
     }
 
-    static function getCreateTableSql() {
+    protected static function getCreateTableSql() {
         $sTableSql = "
                 CREATE TABLE IF NOT EXISTS `nets_transactions` (
                     `oxid` int(10) unsigned NOT NULL auto_increment,
@@ -119,9 +121,9 @@ class Events
                     `payment_method` varchar(255) collate latin1_general_ci default NULL,
                     `transaction_id` varchar(50)  default NULL,
                     `charge_id` varchar(50)  default NULL,
-                                            `product_ref` varchar(55) collate latin1_general_ci default NULL,
-                                            `charge_qty` int(11) default NULL,
-                                            `charge_left_qty` int(11) default NULL,
+                    `product_ref` varchar(55) collate latin1_general_ci default NULL,
+                    `charge_qty` int(11) default NULL,
+                    `charge_left_qty` int(11) default NULL,
                     `oxordernr` int(11) default NULL,
                     `oxorder_id` char(32) default NULL,
                     `amount` varchar(255) collate latin1_general_ci default NULL,
@@ -136,5 +138,4 @@ class Events
             ";
         return $sTableSql;
     }
-
 }

@@ -3,8 +3,6 @@
 namespace Es\NetsEasy\extend\Application\Model;
 
 use Es\NetsEasy\Compatibility\BackwardsCompatibilityHelper;
-use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
-use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Field;
 use Es\NetsEasy\Application\Model\Api\Payment\ChargeRefund;
@@ -434,9 +432,13 @@ class Order extends Order_parent
         return true;
     }
 
-    protected function getQueryBuilder() {
-
-        $oBackwardsCompatibilityHelper = oxNew(BackwardsCompatibilityHelper::class);
-        return $oBackwardsCompatibilityHelper->getQueryBuilder();
+    /**
+     * Returns a new QueryBuilder object
+     *
+     * @return \Doctrine\DBAL\Query\QueryBuilder
+     */
+    protected function getQueryBuilder()
+    {
+        return BackwardsCompatibilityHelper::getQueryBuilder();
     }
 }
