@@ -6,11 +6,14 @@
 |Author       | `Nets eCom`
 |Prefix       | `EASY-OX6`
 |Shop Version | `6+`
-|Version      | `2.0.1`
-|Guide        | https://developer.nexigroup.com/nexi-checkout/en-EU/docs/nexi-checkout-for-oxid/
+|Version      | `2.0.2`
 |Github       | https://github.com/Nets-eCom/oxid6_easy
 
 ## CHANGELOG
+
+### Version 2.0.2 - Released 2024-05-20
+* Fixed: Added check for payment method in finalizeOrder
+* Fixed: Remove second PaymentRetrieve call
 
 ### Version 2.0.1 - Released 2023-10-05
 * Update : backwards compatibility of OXID 6.1 

@@ -6,8 +6,8 @@
 |Author       | `Nets eCom`
 |Prefix       | `EASY-OX6`
 |Shop Version | `6+`
-|Version      | `2.0.1`
-|Guide        | https://tech.nets.eu/shopmodules
+|Version      | `2.0.2`
+|Guide        | https://developer.nexigroup.com/nexi-checkout/en-EU/docs/checkout-for-oxid/checkout-for-oxid-oxid-65/
 |Github       | https://github.com/Nets-eCom/oxid6_easy
 
 ### :memo: *NOTE* :
