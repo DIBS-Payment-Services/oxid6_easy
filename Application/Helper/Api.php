@@ -7,13 +7,13 @@ use OxidEsales\Eshop\Core\ShopVersion;
 
 class Api
 {
+    const COMMERCE_PLATFORM_TAG = 'Oxid6';
+
     const API_LIVE = 'https://api.dibspayment.eu/';
     const API_TEST = 'https://test.api.dibspayment.eu/';
 
     const JS_ENDPOINT_LIVE = "https://checkout.dibspayment.eu/v1/checkout.js";
     const JS_ENDPOINT_TEST = "https://test.checkout.dibspayment.eu/v1/checkout.js";
-
-    const REPORTING_API = 'https://ps17.sokoni.it/module/api/enquiry';
 
     const EMBEDDED = "EmbeddedCheckout";
     const HOSTED = "HostedPaymentPage";
@@ -121,15 +121,6 @@ class Api
         return $this->getIntegrationType() === self::HOSTED;
     }
 
-    /**
-     * Returns reporting api url
-     *
-     * @return string
-     */
-    public function getReportingApiUrl()
-    {
-        return self::REPORTING_API;
-    }
 
     /**
      * Formats price for API
@@ -152,13 +143,22 @@ class Api
         return Registry::getConfig()->getActiveView()->getViewConfig()->getModuleUrl("esnetseasy", "out/src/js/").'layout.js';
     }
 
-    /**
-     * Returns the oxid shop identifier
-     *
-     * @return string
-     */
-    public function getShopIdentifier()
+    public function getCommercePlatformTag(): string
     {
-        return Registry::getConfig()->getActiveShop()->oxshops__oxedition->value."_".ShopVersion::getVersion();
+        return \sprintf(
+            '%s %s, %s, php%s',
+            self::COMMERCE_PLATFORM_TAG,
+            ShopVersion::getVersion(),
+            $this->getPluginVersion(),
+            \PHP_VERSION
+        );
+    }
+    
+    private function getPluginVersion()
+    {
+        $module = oxNew(\OxidEsales\Eshop\Core\Module\Module::class);
+        $module->load('esnetseasy');
+
+        return $module->getInfo('version');
     }
 }

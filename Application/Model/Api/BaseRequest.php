@@ -43,7 +43,7 @@ abstract class BaseRequest
             "Content-Type: application/json",
             "Accept: application/json",
             "Authorization: ".Api::getInstance()->getSecretKey(),
-            "CommercePlatformTag: Oxid ".Api::getInstance()->getShopIdentifier(),
+            "CommercePlatformTag: ".Api::getInstance()->getCommercePlatformTag(),
         ];
     }
 

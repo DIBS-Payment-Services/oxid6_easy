@@ -28,7 +28,6 @@ $aModule = [
         'en' => 'Nets safe online payments'
     ],
     'extend' => [
-        \OxidEsales\Eshop\Application\Controller\Admin\ModuleConfiguration::class => Es\NetsEasy\extend\Application\Controller\Admin\ModuleConfiguration::class,
         \OxidEsales\Eshop\Application\Controller\Admin\OrderOverview::class => Es\NetsEasy\extend\Application\Controller\Admin\OrderOverview::class,
         \OxidEsales\Eshop\Application\Controller\PaymentController::class => Es\NetsEasy\extend\Application\Controller\PaymentController::class,
         \OxidEsales\Eshop\Application\Controller\OrderController::class => Es\NetsEasy\extend\Application\Controller\OrderController::class,
@@ -42,7 +41,6 @@ $aModule = [
         ['template' => 'page/checkout/order.tpl',       'block' => 'shippingAndPayment',            'file' => 'nets_shippingAndPayment.tpl'],
         ['template' => 'page/checkout/order.tpl',       'block' => 'checkout_order_errors',         'file' => 'nets_checkout_order_errors.tpl'],
         ['template' => 'page/checkout/thankyou.tpl',    'block' => 'checkout_thankyou_info',        'file' => 'nets_checkout_thankyou_info.tpl'],
-        ['template' => 'module_config.tpl',             'block' => 'admin_module_config_form',      'file' => 'nets_module_config_form.tpl'],
         ['template' => 'page/checkout/payment.tpl',     'block' => 'select_payment',                'file' => 'nets_select_payment.tpl']
     ],
     'settings' => [
