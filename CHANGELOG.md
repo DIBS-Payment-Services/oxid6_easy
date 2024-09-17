@@ -5,11 +5,14 @@
 |-------------|-----------------------------------------------
 |Author       | `Nets eCom`
 |Prefix       | `EASY-OX6`
-|Shop Version | `6+`
-|Version      | `2.0.2`
+|Shop Version | `6.x`
+|Version      | `2.0.3`
 |Github       | https://github.com/Nets-eCom/oxid6_easy
 
 ## CHANGELOG
+
+### Version 2.0.3 - Released 2024-09-17
+* Fixed: remove reporting references
 
 ### Version 2.0.2 - Released 2024-05-20
 * Fixed: Added check for payment method in finalizeOrder
