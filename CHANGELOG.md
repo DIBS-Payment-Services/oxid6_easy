@@ -6,10 +6,14 @@
 |Author       | `Nets eCom`
 |Prefix       | `EASY-OX6`
 |Shop Version | `6.x`
-|Version      | `2.0.3`
+|Version      | `2.0.4`
 |Github       | https://github.com/Nets-eCom/oxid6_easy
 
 ## CHANGELOG
+
+### Version 2.0.4 - Released 2024-11-12
+* Fixed: check terms and conditions when embedded mode & adb are enabled
+* Fixed: sanitize address values
 
 ### Version 2.0.3 - Released 2024-09-17
 * Fixed: remove reporting references

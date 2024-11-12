@@ -3,7 +3,7 @@
 /**
  * Nets Oxid Payment module metadata
  *
- * @version 2.0.3
+ * @version 2.0.4
  * @package Nets
  * @copyright nets
  */
@@ -18,7 +18,7 @@ $sMetadataVersion = '2.1';
 $aModule = [
     'id' => 'esnetseasy',
     'title' => 'Nets Easy',
-    'version' => '2.0.3',
+    'version' => '2.0.4',
     'author' => 'Nets eCom',
     'url' => 'https://ecom.nets.eu/',
     'email' => 'hello-ecomconnect@nexigroup.com',
