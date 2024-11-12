@@ -2,6 +2,7 @@
 
 namespace Es\NetsEasy\Application\Model\Api\Payment;
 
+use Es\NetsEasy\Application\Helper\StringSanitizer;
 use OxidEsales\Eshop\Application\Model\Country;
 use OxidEsales\Eshop\Application\Model\Order;
 use OxidEsales\Eshop\Application\Model\OrderArticle;
@@ -52,7 +53,7 @@ class PaymentCreate extends \Es\NetsEasy\Application\Model\Api\OrderItemRequest
         $aConsumer = [
             'email' => $oOrder->oxorder__oxbillemail->value,
             'shippingAddress' => [
-                'addressLine1' => !empty($oOrder->oxorder__oxdelcountryid->value) ? $oOrder->oxorder__oxdelstreet->value." ".$oOrder->oxorder__oxdelstreetnr->value : $oOrder->oxorder__oxbillstreet->value." ".$oOrder->oxorder__oxbillstreetnr->value,
+                'addressLine1' => $this->getAddress($oOrder),
                 'postalCode'   => !empty($oOrder->oxorder__oxdelcountryid->value) ? $oOrder->oxorder__oxdelzip->value : $oOrder->oxorder__oxbillzip->value,
                 'city'         => !empty($oOrder->oxorder__oxdelcountryid->value) ? $oOrder->oxorder__oxdelcity->value : $oOrder->oxorder__oxbillcity->value,
                 'country'      => $this->getCountryCodeById(!empty($oOrder->oxorder__oxdelcountryid->value) ? $oOrder->oxorder__oxdelcountryid->value : $oOrder->oxorder__oxbillcountryid->value),
@@ -228,5 +229,14 @@ class PaymentCreate extends \Es\NetsEasy\Application\Model\Api\OrderItemRequest
     {
         $aParams = $this->getParamsFromOrder($oOrder, $pay_method);
         return $this->sendCurlRequest($aParams);
+    }
+
+    private function getAddress(Order $oOrder): string
+    {
+        $street = !empty($oOrder->oxorder__oxdelcountryid->value)
+            ? $oOrder->oxorder__oxdelstreet->value . " " . $oOrder->oxorder__oxdelstreetnr->value
+            : $oOrder->oxorder__oxbillstreet->value . " " . $oOrder->oxorder__oxbillstreetnr->value;
+
+        return StringSanitizer::sanitize($street);
     }
 }
